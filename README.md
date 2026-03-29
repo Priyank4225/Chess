@@ -25,6 +25,7 @@ chess-online/
 │   └── Resources/
 │
 ├── requirements.txt
+├── LICENSE
 └── README.md
 ```
 
