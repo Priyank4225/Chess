@@ -1,4 +1,4 @@
-import pygame
+import pygame_ce as pygame
 import asyncio, websockets, json, threading, queue, os
 
 pygame.init()
@@ -14,6 +14,8 @@ def load(path):
 def scale(img):
     return pygame.transform.scale(img, (tile, tile))
 
+board_img = pygame.transform.scale(load("board.png"), (size, size))
+
 white_pawn = scale(load("Resources/white-pawn.png"))
 white_rook = scale(load("Resources/white-rook.png"))
 white_knight = scale(load("Resources/white-knight.png"))
@@ -27,6 +29,8 @@ black_knight = scale(load("Resources/black-knight.png"))
 black_bishop = scale(load("Resources/black-bishop.png"))
 black_queen = scale(load("Resources/black-queen.png"))
 black_king = scale(load("Resources/black-king.png"))
+
+dot = scale(load("Resources/dot.png"))
 
 PIECES = {
     (1,1): white_pawn,
@@ -96,13 +100,10 @@ while running:
     except:
         pass
 
-    screen.fill((200,200,200))
+    screen.blit(board_img, (0, 0))
 
     for i in range(8):
         for j in range(8):
-            if (i + j) % 2:
-                pygame.draw.rect(screen, (100,100,100), (j*tile, i*tile, tile, tile))
-
             piece = board[i][j]
             if piece != 0:
                 color = piece // 10
@@ -110,7 +111,7 @@ while running:
                 screen.blit(PIECES[(color, kind)], (j*tile, i*tile))
 
             if pos and str(i)+str(j) in pos[0]:
-                pygame.draw.circle(screen, (0,255,0), (j*tile+tile//2, i*tile+tile//2), 10)
+                screen.blit(dot, (j*tile, i*tile))
 
     pygame.display.flip()
     clock.tick(60)
